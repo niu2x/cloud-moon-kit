@@ -1,0 +1,9 @@
+/build
+*.so
+*.pyd
+*.egg-info/
+__pycache__/
+uv.lock
+*.interp
+*.tokens
+/utils/src/rust_blight.h
