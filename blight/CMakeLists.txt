@@ -23,5 +23,6 @@ target_include_directories(blight PUBLIC
 )
 
 target_link_libraries(blight PUBLIC
+    log
     boost
 )

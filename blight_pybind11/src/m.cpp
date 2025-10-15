@@ -6,6 +6,7 @@
 
 #include <boost/predef.h>
 
+#include <yy/log.h>
 #include <yy/blight.h>
 
 namespace py = pybind11;

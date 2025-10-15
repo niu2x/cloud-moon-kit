@@ -1,0 +1,4 @@
+# 基本配置
+language = "C++"  # 可选 "C" 或 "C++"
+include_guard = "YY_RUST_H"
+autogen_warning = "/* WARNING: Auto-generated file. Do not modify! */"

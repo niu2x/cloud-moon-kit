@@ -7,3 +7,4 @@ uv.lock
 *.interp
 *.tokens
 /utils/src/rust_blight.h
+/rust_support/include
