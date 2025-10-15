@@ -16,8 +16,8 @@ PYBIND11_MODULE(blight_cxx, m) {
 #if BOOST_OS_LINUX
     auto m_linux = m.def_submodule("linux", "Linux Utility");
     // 在子模块中添加方法
-    m_linux.def("so_inject", [](pid_t pid, const std::string& so_path) {
-        yy::blight::linux::so_inject(pid, so_path);
+    m_linux.def("inject_so", [](pid_t pid, const std::string& so_path) {
+        yy::blight::linux::inject_so(pid, so_path);
     });
 #endif
 }

@@ -6,6 +6,6 @@ import blight_cxx.windows as windows
 app = typer.Typer()
 
 @app.command()
-def dll_inject(pid: int, dll_path: Path):
+def inject_dll(pid: int, dll_path: Path):
     windows.request_debug_privilege(sys.argv)
-    windows.dll_inject(pid, str(dll_path.resolve()))
+    windows.inject_dll(pid, str(dll_path.resolve()))

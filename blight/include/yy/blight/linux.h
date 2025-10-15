@@ -10,6 +10,5 @@
 
 namespace yy::blight::linux {
 
-void so_inject(pid_t pid, const std::string& dll_path);
-
+void inject_so(pid_t pid, const std::string& dll_path);
 }
