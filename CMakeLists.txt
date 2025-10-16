@@ -40,7 +40,7 @@ add_dependencies(rust_lib build_rust)  # 在运行 tests 前先构建 C++ 项目
 
 add_subdirectory(blight)
 add_subdirectory(blight_pybind11)
-
 add_subdirectory(log)
+add_subdirectory(dynlib)
 
-add_subdirectory(load_so)
+add_subdirectory(load_dynlib)
