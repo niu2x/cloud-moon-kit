@@ -1,5 +1,6 @@
 /build
 *.so
+*.dll
 *.pyd
 *.egg-info/
 __pycache__/

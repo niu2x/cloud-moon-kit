@@ -5,11 +5,24 @@ cxx_project_preset(yy_dynlib)
 
 target_sources(yy_dynlib PRIVATE
     src/dynlib.cpp
+    src/dynlib_manager.cpp
 )
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     target_sources(yy_dynlib PRIVATE
-        src/linux_dynlib.cpp
+        src/posix_dynlib.cpp
+    )
+endif()
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+    target_sources(yy_dynlib PRIVATE
+        src/posix_dynlib.cpp
+    )
+endif()
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    target_sources(yy_dynlib PRIVATE
+        src/windows_dynlib.cpp
     )
 endif()
 

@@ -8,11 +8,26 @@ target_sources(yy_log PRIVATE
 )
 
 target_link_libraries(yy_log PUBLIC
+    yy_charset
+    boost
     rust_lib
     Threads::Threads
-    dl
 )
 
 target_include_directories(yy_log PUBLIC
     include
 )
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    target_link_libraries(yy_log PUBLIC
+        dl
+    )
+endif()
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    target_link_libraries(yy_log PUBLIC
+        Ws2_32
+        Userenv
+        ntdll
+    )
+endif()

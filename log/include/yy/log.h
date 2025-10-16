@@ -34,6 +34,9 @@ private:
     void write_log(const char* message);
 };
 
+void panic(const std::string& panic_msg);
+void panic(const char* fmt, ...);
+
 } // namespace yy
 
 #define LOG(level) yy::Logger(yy::Logger::LOG_LEVEL_##level)

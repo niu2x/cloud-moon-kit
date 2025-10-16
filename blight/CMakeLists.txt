@@ -24,5 +24,6 @@ target_include_directories(yy_blight PUBLIC
 
 target_link_libraries(yy_blight PUBLIC
     yy_log
+    yy_charset
     boost
 )

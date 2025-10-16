@@ -9,6 +9,15 @@ function(cxx_project_preset)
             CXX_STANDARD_REQUIRED ON
             CXX_EXTENSIONS OFF
         )
+
+        if(MSVC)
+            target_compile_definitions(${target} PUBLIC UNICODE _UNICODE)
+            target_compile_options(${target} PUBLIC
+                "$<$<C_COMPILER_ID:MSVC>:/utf-8>"
+                "$<$<CXX_COMPILER_ID:MSVC>:/utf-8>"
+            )
+        endif()
+        
     endforeach()
 endfunction()
 
