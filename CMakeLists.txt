@@ -90,6 +90,12 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 		libssl
 		libcrypto
 	)
+
+	install(FILES
+		third_party/x86_64-pc-windows-msvc/OpenSSL/bin/libcrypto-3-x64.dll
+		third_party/x86_64-pc-windows-msvc/OpenSSL/bin/libssl-3-x64.dll
+		DESTINATION bin
+	)
 	
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 	add_library(boost INTERFACE)
