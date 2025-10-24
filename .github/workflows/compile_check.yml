@@ -1,0 +1,51 @@
+name: Build Windows VS2022
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v4
+
+    # 安装 Rust（Windows 环境）
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+
+    # 编译
+    - name: Compile with VS2022
+      run: |
+        git submodule update --init --recursive
+        cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022"
+        cmake --build build --config Release
+        cmake --install build --prefix dist
+
+  check_linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v4
+
+    # Ubuntu 20.04 环境依赖
+    - name: Set up dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake python3 libpython3-dev
+
+    # 安装 Rust
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+
+    # Compile
+    - name: Compile
+      run: |
+        git submodule update --init --recursive
+        cmake -S. -B build -DCMAKE_BUILD_TYPE=Release
+        cmake --build build --config Release -j
+        cmake --install build --prefix dist
