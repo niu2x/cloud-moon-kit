@@ -18,3 +18,5 @@ target_link_libraries(msg800 PRIVATE
     yy_crypto
     antlr4
 )
+
+install(TARGETS msg800 RUNTIME DESTINATION bin)
