@@ -139,12 +139,12 @@ public:
     }
 
 private:
-    void syntaxError(antlr4::Recognizer* recognizer,
-                     antlr4::Token*      offendingSymbol,
-                     size_t              line,
-                     size_t              charPositionInLine,
-                     const std::string&  msg,
-                     std::exception_ptr  e) override
+    void syntaxError(antlr4::Recognizer*,
+                     antlr4::Token*,
+                     size_t,
+                     size_t,
+                     const std::string&,
+                     std::exception_ptr) override
     {
         some_error_ = true;
     }
@@ -154,17 +154,17 @@ private:
 
 class MyListener : public protocolBaseListener {
 public:
-    void exitProtocol_none(protocolParser::Protocol_noneContext* ctx) override
+    void exitProtocol_none(protocolParser::Protocol_noneContext*) override
     {
         protocol_ = std::make_unique<yy::msg800::NoneNetworkProtocol>();
     }
 
-    void exitProtocol_bird(protocolParser::Protocol_birdContext* ctx) override
+    void exitProtocol_bird(protocolParser::Protocol_birdContext*) override
     {
         protocol_ = std::make_unique<BirdNetworkProtocol>(bird_key_, bird_iv_);
     }
 
-    void exitProtocol_xor(protocolParser::Protocol_xorContext* ctx) override
+    void exitProtocol_xor(protocolParser::Protocol_xorContext*) override
     {
         protocol_ = std::make_unique<yy::msg800::XOR_NetworkProtocol>(xor_key_);
     }

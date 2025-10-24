@@ -154,15 +154,18 @@ void TunnelServer::transfer_write(socket&          r,
 
 )
 {
-    asio::async_write(w, asio::buffer(buf, bytes),
-        [&r, &w, rp, wp, &buf, pair, this](auto err, size_t n) {
-            pair->last_active_time = std::chrono::system_clock::now();
-            if (err) {
-                shutdown_pair(pair);
-            } else {
-                transfer_some_data(r, w, rp, wp, buf, pair);
-            }
-        });
+    asio::async_write(w,
+                      asio::buffer(buf, bytes),
+                      [&r, &w, rp, wp, &buf, pair, this](auto err, size_t n) {
+                          (void)n;
+
+                          pair->last_active_time = std::chrono::system_clock::now();
+                          if (err) {
+                              shutdown_pair(pair);
+                          } else {
+                              transfer_some_data(r, w, rp, wp, buf, pair);
+                          }
+                      });
 }
 
 void TunnelServer::transfer_write(socket&                                       r,
@@ -175,6 +178,7 @@ void TunnelServer::transfer_write(socket&                                       
 {
 
     asio::async_write(w, messages, [&r, &w, rp, wp, &buf, pair, this](auto err, size_t n) {
+        (void)n;
         if (err) {
             shutdown_pair(pair);
         } else {

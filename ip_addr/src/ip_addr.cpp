@@ -12,7 +12,7 @@ namespace yy {
 
 class MyListener : public ip_addrBaseListener {
 public:
-    void exitIp_addr(ip_addrParser::Ip_addrContext* ctx) override
+    void exitIp_addr(ip_addrParser::Ip_addrContext*) override
     {
     }
 
@@ -52,12 +52,12 @@ public:
     }
 
 private:
-    void syntaxError(antlr4::Recognizer* recognizer,
-                     antlr4::Token*      offendingSymbol,
-                     size_t              line,
-                     size_t              charPositionInLine,
-                     const std::string&  msg,
-                     std::exception_ptr  e) override
+    void syntaxError(antlr4::Recognizer*,
+                     antlr4::Token*,
+                     size_t,
+                     size_t,
+                     const std::string&,
+                     std::exception_ptr) override
     {
         some_error_ = true;
     }

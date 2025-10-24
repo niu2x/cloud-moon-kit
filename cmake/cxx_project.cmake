@@ -1,3 +1,5 @@
+include(warning_as_error)
+
 function(cxx_project_preset)
     foreach(target IN ITEMS ${ARGN})
         set_target_properties(${target} PROPERTIES 
@@ -17,6 +19,8 @@ function(cxx_project_preset)
                 "$<$<CXX_COMPILER_ID:MSVC>:/utf-8>"
             )
         endif()
+
+        warning_as_error_enable(${target})
         
     endforeach()
 endfunction()
