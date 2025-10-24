@@ -29,12 +29,8 @@ jobs:
         cmake --build build --config Release -j
         cmake --install build --prefix dist
 
-    - name: Package
-      run: |
-        tar -czvf linux.tar.gz -C dist .
-
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: linux-dist
-        path: linux.tar.gz
+        path: dist
