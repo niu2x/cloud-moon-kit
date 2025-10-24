@@ -36,10 +36,10 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 
 	add_library(openssl INTERFACE)
 	target_include_directories(openssl INTERFACE
-		${CMAKE_SOURCE_DIR}/third_party/x86_64-unknown-linux/OpenSSL/include/
+		${CMAKE_SOURCE_DIR}/third_party/x86_64-unknown-linux/openssl/include/
 	)
 	target_link_directories(openssl INTERFACE
-		${CMAKE_SOURCE_DIR}/third_party/x86_64-unknown-linux/OpenSSL/lib
+		${CMAKE_SOURCE_DIR}/third_party/x86_64-unknown-linux/openssl/lib
 	)
 	target_link_libraries(openssl INTERFACE
 		ssl
