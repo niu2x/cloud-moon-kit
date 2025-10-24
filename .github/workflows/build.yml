@@ -22,7 +22,7 @@ jobs:
       uses: dtolnay/rust-toolchain@stable
 
     # Compile
-    - name: Set up dependencies
+    - name: Compile
       run: |
         cmake -S. -B build -DCMAKE_BUILD_TYPE=Release
         cmake --build build --config Release -j
