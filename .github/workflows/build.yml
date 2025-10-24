@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v4
+
+    # ===== Ubuntu 20.04 环境依赖 =====
+    - name: Set up dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake        
+
+    # ===== Windows VS2022 环境配置 =====
+    - name: Set up dependencies (Windows VS2022)
+      if: matrix.os == 'windows-latest'
+      uses: egor-tensin/setup-cmake@v1
+      with:
+        cmake-version: latest
+    - name: Setup MSVC environment
+      if: matrix.os == 'windows-latest'
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    # ===== 安装 Rust =====
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+
