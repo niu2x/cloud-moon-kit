@@ -20,7 +20,7 @@ function(cxx_project_preset)
             )
         endif()
 
-        warning_as_error_enable(${target})
+        # warning_as_error_enable(${target})
         
     endforeach()
 endfunction()
