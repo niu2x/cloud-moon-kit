@@ -36,6 +36,11 @@ public:
         return ip_addr_;
     }
 
+    MyListener() {
+        ip_addr_.ipv4 = "127.0.0.1";
+        ip_addr_.port = 8080;
+    }
+
 private:
     IP_Address ip_addr_;
 };
