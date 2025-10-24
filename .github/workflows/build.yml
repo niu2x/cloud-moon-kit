@@ -15,7 +15,7 @@ jobs:
     - name: Set up dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake
+        sudo apt-get install -y build-essential cmake python3 libpython3-dev
 
     # 安装 Rust
     - name: Install Rust
@@ -24,6 +24,7 @@ jobs:
     # Compile
     - name: Compile
       run: |
+        git submodule update --init --recursive
         cmake -S. -B build -DCMAKE_BUILD_TYPE=Release
         cmake --build build --config Release -j
         cmake --install build --prefix dist
