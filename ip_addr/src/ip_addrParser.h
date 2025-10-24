@@ -12,7 +12,7 @@
 class  ip_addrParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, NUM = 3, NEWLINE = 4, SPACE = 5
+    T__0 = 1, T__1 = 2, NUM = 3, LOCAL = 4, NEWLINE = 5, SPACE = 6
   };
 
   enum {
@@ -60,6 +60,7 @@ public:
     IpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     Ipv4Context *ipv4();
+    antlr4::tree::TerminalNode *LOCAL();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

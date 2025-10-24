@@ -12,7 +12,7 @@
 class  ip_addrLexer : public antlr4::Lexer {
 public:
   enum {
-    T__0 = 1, T__1 = 2, NUM = 3, NEWLINE = 4, SPACE = 5
+    T__0 = 1, T__1 = 2, NUM = 3, LOCAL = 4, NEWLINE = 5, SPACE = 6
   };
 
   explicit ip_addrLexer(antlr4::CharStream *input);

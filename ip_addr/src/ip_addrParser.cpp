@@ -55,21 +55,22 @@ void ip_addrParserInitialize() {
       "ip_addr", "ip", "ipv4", "port"
     },
     std::vector<std::string>{
-      "", "':'", "'.'"
+      "", "':'", "'.'", "", "'localhost'"
     },
     std::vector<std::string>{
-      "", "", "", "NUM", "NEWLINE", "SPACE"
+      "", "", "", "NUM", "LOCAL", "NEWLINE", "SPACE"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,5,30,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
-  	3,0,16,8,0,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,0,0,4,
-  	0,2,4,6,0,0,27,0,15,1,0,0,0,2,17,1,0,0,0,4,19,1,0,0,0,6,27,1,0,0,0,8,
-  	9,5,1,0,0,9,16,3,6,3,0,10,11,3,2,1,0,11,12,5,1,0,0,12,13,3,6,3,0,13,16,
-  	1,0,0,0,14,16,3,2,1,0,15,8,1,0,0,0,15,10,1,0,0,0,15,14,1,0,0,0,16,1,1,
-  	0,0,0,17,18,3,4,2,0,18,3,1,0,0,0,19,20,5,3,0,0,20,21,5,2,0,0,21,22,5,
-  	3,0,0,22,23,5,2,0,0,23,24,5,3,0,0,24,25,5,2,0,0,25,26,5,3,0,0,26,5,1,
-  	0,0,0,27,28,5,3,0,0,28,7,1,0,0,0,1,15
+  	4,1,6,32,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,1,0,1,0,1,0,1,0,1,0,1,0,1,0,
+  	3,0,16,8,0,1,1,1,1,3,1,20,8,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,3,1,3,
+  	1,3,0,0,4,0,2,4,6,0,0,30,0,15,1,0,0,0,2,19,1,0,0,0,4,21,1,0,0,0,6,29,
+  	1,0,0,0,8,9,5,1,0,0,9,16,3,6,3,0,10,11,3,2,1,0,11,12,5,1,0,0,12,13,3,
+  	6,3,0,13,16,1,0,0,0,14,16,3,2,1,0,15,8,1,0,0,0,15,10,1,0,0,0,15,14,1,
+  	0,0,0,16,1,1,0,0,0,17,20,3,4,2,0,18,20,5,4,0,0,19,17,1,0,0,0,19,18,1,
+  	0,0,0,20,3,1,0,0,0,21,22,5,3,0,0,22,23,5,2,0,0,23,24,5,3,0,0,24,25,5,
+  	2,0,0,25,26,5,3,0,0,26,27,5,2,0,0,27,28,5,3,0,0,28,5,1,0,0,0,29,30,5,
+  	3,0,0,30,7,1,0,0,0,2,15,19
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -215,6 +216,10 @@ ip_addrParser::Ipv4Context* ip_addrParser::IpContext::ipv4() {
   return getRuleContext<ip_addrParser::Ipv4Context>(0);
 }
 
+tree::TerminalNode* ip_addrParser::IpContext::LOCAL() {
+  return getToken(ip_addrParser::LOCAL, 0);
+}
+
 
 size_t ip_addrParser::IpContext::getRuleIndex() const {
   return ip_addrParser::RuleIp;
@@ -244,9 +249,26 @@ ip_addrParser::IpContext* ip_addrParser::ip() {
     exitRule();
   });
   try {
-    enterOuterAlt(_localctx, 1);
-    setState(17);
-    ipv4();
+    setState(19);
+    _errHandler->sync(this);
+    switch (_input->LA(1)) {
+      case ip_addrParser::NUM: {
+        enterOuterAlt(_localctx, 1);
+        setState(17);
+        ipv4();
+        break;
+      }
+
+      case ip_addrParser::LOCAL: {
+        enterOuterAlt(_localctx, 2);
+        setState(18);
+        match(ip_addrParser::LOCAL);
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
+    }
    
   }
   catch (RecognitionException &e) {
@@ -302,10 +324,6 @@ ip_addrParser::Ipv4Context* ip_addrParser::ipv4() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(19);
-    match(ip_addrParser::NUM);
-    setState(20);
-    match(ip_addrParser::T__1);
     setState(21);
     match(ip_addrParser::NUM);
     setState(22);
@@ -315,6 +333,10 @@ ip_addrParser::Ipv4Context* ip_addrParser::ipv4() {
     setState(24);
     match(ip_addrParser::T__1);
     setState(25);
+    match(ip_addrParser::NUM);
+    setState(26);
+    match(ip_addrParser::T__1);
+    setState(27);
     match(ip_addrParser::NUM);
    
   }
@@ -367,7 +389,7 @@ ip_addrParser::PortContext* ip_addrParser::port() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(27);
+    setState(29);
     match(ip_addrParser::NUM);
    
   }
