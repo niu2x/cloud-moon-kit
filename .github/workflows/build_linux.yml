@@ -4,7 +4,7 @@ on:
   workflow_dispatch:  # 手动触发
 
 jobs:
-  compile:
+  build:
     runs-on: ubuntu-latest
 
     steps:

@@ -8,6 +8,7 @@
 
 #include <string.h>
 #include <random>
+#include <algorithm>
 
 #include "protocol.h"
 
