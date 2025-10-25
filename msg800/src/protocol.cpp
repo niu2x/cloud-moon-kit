@@ -10,6 +10,8 @@
 #include <random>
 #include <algorithm>
 
+#include <yy/log.h>
+
 #include "protocol.h"
 
 #define htonll(x) ((1==htonl(1)) ? (x) : ((uint64_t)htonl((x) & 0xFFFFFFFF) << 32) | htonl((x) >> 32))
@@ -36,6 +38,11 @@ std::vector<ByteBuffer> NoneNetworkProtocol::unpack(const uint8_t* data_ptr, siz
         data_ptr,
         data_ptr + len,
     } };
+}
+
+std::unique_ptr<NetworkProtocol> NoneNetworkProtocol::clone()
+{
+    return std::make_unique<NoneNetworkProtocol>();
 }
 
 XOR_NetworkProtocol::XOR_NetworkProtocol(uint8_t key)
@@ -65,20 +72,21 @@ std::vector<ByteBuffer> XOR_NetworkProtocol::unpack(const uint8_t* data_ptr, siz
     return { std::move(result) };
 }
 
+std::unique_ptr<NetworkProtocol> XOR_NetworkProtocol::clone()
+{
+    return std::make_unique<XOR_NetworkProtocol>(cipher_key_);
+}
+
 BirdNetworkProtocol::BirdNetworkProtocol(const Crypto::Key& key, const Crypto::IV& iv)
 : crypto_(key, iv)
 {
-    printf("key: ");
-    for (int i = 0; i < 16; i++) {
-        printf("%02x ", key[i]);
-    }
-    printf("\n");
+    memcpy(key_, key, 16);
+    memcpy(iv_, iv, 16);
+}
 
-    printf("iv: ");
-    for (int i = 0; i < 16; i++) {
-        printf("%02x ", iv[i]);
-    }
-    printf("\n");
+std::unique_ptr<NetworkProtocol> BirdNetworkProtocol::clone()
+{
+    return std::make_unique<BirdNetworkProtocol>(key_, iv_);
 }
 
 const uint64_t MAGIC = 0x20240828;

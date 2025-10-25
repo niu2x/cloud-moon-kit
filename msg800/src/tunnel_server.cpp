@@ -20,11 +20,11 @@ TunnelServer::TunnelServer(asio::io_context& context,
   local_addr_(local_addr),
   remote_addr_(remote_addr)
 {
-    downstream_protocol_ = downstream_protocol ? std::move(downstream_protocol)
-                                               : std::make_unique<NoneNetworkProtocol>();
-                                               
-    upstream_protocol_   = upstream_protocol ? std::move(upstream_protocol)
-                                             : std::make_unique<NoneNetworkProtocol>();
+    downstream_protocol_proto_ = downstream_protocol ? std::move(downstream_protocol)
+                                                     : std::make_unique<NoneNetworkProtocol>();
+
+    upstream_protocol_proto_ = upstream_protocol ? std::move(upstream_protocol)
+                                                 : std::make_unique<NoneNetworkProtocol>();
 }
 
 TunnelServer::~TunnelServer()
@@ -43,6 +43,8 @@ void TunnelServer::startup()
 void TunnelServer::async_accept()
 {
     auto pair = std::make_shared<Pair>(io_context_);
+    pair->upstream_protocol   = upstream_protocol_proto_->clone();
+    pair->downstream_protocol = downstream_protocol_proto_->clone();
 
     acceptor_->async_accept(pair->downstream, [this, pair](auto err) {
         if (err) {
@@ -79,14 +81,15 @@ void TunnelServer::bridge_pair(PairPtr pair)
 {
     bridge_half(pair->upstream,
                 pair->downstream,
-                upstream_protocol_.get(),
-                downstream_protocol_.get(),
+                pair->upstream_protocol.get(),
+                pair->downstream_protocol.get(),
                 pair->buffers[0],
                 pair);
+
     bridge_half(pair->downstream,
                 pair->upstream,
-                downstream_protocol_.get(),
-                upstream_protocol_.get(),
+                pair->downstream_protocol.get(),
+                pair->upstream_protocol.get(),
                 pair->buffers[1],
                 pair);
 }
@@ -128,11 +131,23 @@ void TunnelServer::transfer_read(socket&          r,
                 pack_messages.push_back(wp->pack(m.data(), m.size()));
             }
 
-            std::vector<boost::asio::const_buffer> buffers;
-            for (auto& m : pack_messages) {
-                buffers.push_back(asio::buffer(m));
+            size_t total_len = 0;
+            for(auto &x: pack_messages){
+                total_len+=x.size();
             }
-            transfer_write(r, w, rp, wp, buf, buffers, pair);
+
+            if(buf.size() < total_len) {
+                LOG(debug) << "enlarge buffer to " << total_len;
+                buf.resize(total_len);
+            }
+
+            auto write_iter = buf.begin();
+            for(auto &x: pack_messages){
+                std::copy(x.begin(), x.end(), write_iter);
+                write_iter += x.size();
+            }
+
+            transfer_write(r, w, rp, wp, buf, total_len, pair);
         } else {
             if (err == boost::asio::error::eof) {
                 LOG(info) << "half close pair";
@@ -158,7 +173,6 @@ void TunnelServer::transfer_write(socket&          r,
                       asio::buffer(buf, bytes),
                       [&r, &w, rp, wp, &buf, pair, this](auto err, size_t n) {
                           (void)n;
-
                           pair->last_active_time = std::chrono::system_clock::now();
                           if (err) {
                               shutdown_pair(pair);
@@ -166,25 +180,6 @@ void TunnelServer::transfer_write(socket&          r,
                               transfer_some_data(r, w, rp, wp, buf, pair);
                           }
                       });
-}
-
-void TunnelServer::transfer_write(socket&                                       r,
-                                  socket&                                       w,
-                                  NetworkProtocol*                              rp,
-                                  NetworkProtocol*                              wp,
-                                  Pair::Buffer&                                 buf,
-                                  const std::vector<boost::asio::const_buffer>& messages,
-                                  PairPtr                                       pair)
-{
-
-    asio::async_write(w, messages, [&r, &w, rp, wp, &buf, pair, this](auto err, size_t n) {
-        (void)n;
-        if (err) {
-            shutdown_pair(pair);
-        } else {
-            transfer_some_data(r, w, rp, wp, buf, pair);
-        }
-    });
 }
 
 void TunnelServer::shutdown_half_pair(PairPtr pair, socket& r, socket& w)

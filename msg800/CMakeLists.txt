@@ -20,3 +20,4 @@ target_link_libraries(msg800 PRIVATE
 )
 
 install(TARGETS msg800 RUNTIME DESTINATION bin)
+
