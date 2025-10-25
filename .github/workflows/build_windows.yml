@@ -20,7 +20,7 @@ jobs:
       run: |
         git submodule update --init --recursive
         cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022"
-        cmake --build build --config Release
+        cmake --build build --config Release -j
         cmake --install build --prefix dist        
 
     - name: Upload artifact
