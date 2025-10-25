@@ -4,6 +4,7 @@ cxx_project_preset(msg800)
 target_sources(msg800 PRIVATE
     src/main.cpp
     src/protocol.cpp
+    src/parse_protocol.cpp
     src/tunnel_server.cpp
 
     src/protocolBaseListener.cpp
