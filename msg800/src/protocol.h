@@ -19,12 +19,15 @@ public:
 
     virtual ByteBuffer              pack(const uint8_t* data_ptr, size_t len)   = 0;
     virtual std::vector<ByteBuffer> unpack(const uint8_t* data_ptr, size_t len) = 0;
+
+    virtual std::unique_ptr<NetworkProtocol> clone() = 0;
 };
 
 class NoneNetworkProtocol : public NetworkProtocol {
 public:
     ByteBuffer              pack(const uint8_t* data_ptr, size_t len) override;
     std::vector<ByteBuffer> unpack(const uint8_t* data_ptr, size_t len) override;
+    std::unique_ptr<NetworkProtocol> clone() override;
 };
 
 class XOR_NetworkProtocol : public NetworkProtocol {
@@ -32,6 +35,7 @@ public:
     explicit XOR_NetworkProtocol(uint8_t cipher_key);
     ByteBuffer              pack(const uint8_t* data_ptr, size_t len) override;
     std::vector<ByteBuffer> unpack(const uint8_t* data_ptr, size_t len) override;
+    std::unique_ptr<NetworkProtocol> clone() override;
 
 private:
     uint8_t cipher_key_;
@@ -44,10 +48,13 @@ public:
     BirdNetworkProtocol(const Crypto::Key& key, const Crypto::IV& iv);
     ByteBuffer              pack(const uint8_t* data_ptr, size_t len) override;
     std::vector<ByteBuffer> unpack(const uint8_t* data_ptr, size_t len) override;
+    std::unique_ptr<NetworkProtocol> clone() override;
 
 private:
-    Crypto crypto_;
+    Crypto::Key key_;
+    Crypto::IV  iv_;
 
+    Crypto     crypto_;
     ByteBuffer buffer_;
 };
 

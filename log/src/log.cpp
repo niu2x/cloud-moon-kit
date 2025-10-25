@@ -20,7 +20,7 @@ struct LoggerInit {
 void panic(const std::string& panic_msg)
 {
     LOG(error) << panic_msg;
-    throw std::runtime_error("blight panic: " + panic_msg);
+    throw std::runtime_error("panic: " + panic_msg);
 }
 
 void panic(const char* fmt, ...)

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.17.0 FATAL_ERROR)
 
-project(cloud_moon_kit VERSION 0.1.1 LANGUAGES CXX C)
+project(cloud_moon_kit VERSION 0.1.2 LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 

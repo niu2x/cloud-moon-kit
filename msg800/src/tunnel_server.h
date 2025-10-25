@@ -38,7 +38,10 @@ private:
         socket upstream;
         socket downstream;
 
-        using Buffer = std::array<uint8_t, 4096>;
+        std::unique_ptr<NetworkProtocol> upstream_protocol;
+        std::unique_ptr<NetworkProtocol> downstream_protocol;
+
+        using Buffer = std::vector<uint8_t>;
 
         Buffer buffers[2];
 
@@ -51,11 +54,13 @@ private:
           downstream(context),
           half_shutdown(0)
         {
+            buffers[0].resize(16 * 2);
+            buffers[1].resize(16 * 2);
         }
     };
 
-    std::unique_ptr<NetworkProtocol> upstream_protocol_;
-    std::unique_ptr<NetworkProtocol> downstream_protocol_;
+    std::unique_ptr<NetworkProtocol> upstream_protocol_proto_;
+    std::unique_ptr<NetworkProtocol> downstream_protocol_proto_;
 
     using PairPtr = std::shared_ptr<Pair>;
 
@@ -92,14 +97,6 @@ private:
                         Pair::Buffer&    buf,
                         size_t           bytes,
                         PairPtr          pair);
-
-    void transfer_write(socket&                                       r,
-                        socket&                                       w,
-                        NetworkProtocol*                              rp,
-                        NetworkProtocol*                              wp,
-                        Pair::Buffer&                                 buf,
-                        const std::vector<boost::asio::const_buffer>& messages,
-                        PairPtr                                       pair);
 
     void shutdown_pair(PairPtr pair);
     void shutdown_half_pair(PairPtr pair, socket& r, socket& w);

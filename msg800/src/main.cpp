@@ -114,19 +114,15 @@ void run(const IP_Address& local_addr,
          std::unique_ptr<NetworkProtocol> downstream_protocol,
          std::unique_ptr<NetworkProtocol> upstream_protocol)
 {
-    try {
-        boost::asio::io_context io_context;
+    boost::asio::io_context io_context;
 
-        yy::msg800::TunnelServer tunnel_server(io_context,
-                                               local_addr,
-                                               remote_addr,
-                                               std::move(downstream_protocol),
-                                               std::move(upstream_protocol));
-        tunnel_server.startup();
+    yy::msg800::TunnelServer tunnel_server(io_context,
+                                           local_addr,
+                                           remote_addr,
+                                           std::move(downstream_protocol),
+                                           std::move(upstream_protocol));
+    tunnel_server.startup();
 
-        io_context.run();
+    io_context.run();
 
-    } catch (std::exception& e) {
-        std::cerr << e.what();
-    }
 }
