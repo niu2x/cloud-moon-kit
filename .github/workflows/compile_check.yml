@@ -1,4 +1,4 @@
-name: Build Windows VS2022
+name: Auto Compile Check
 
 on:
   push:
