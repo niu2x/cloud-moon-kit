@@ -149,12 +149,12 @@ void TunnelServer::transfer_read(socket&          r,
 
             transfer_write(r, w, rp, wp, buf, total_len, pair);
         } else {
-            if (err == boost::asio::error::eof) {
-                LOG(info) << "half close pair";
-                shutdown_half_pair(pair, r, w);
-            } else {
+            // if (err == boost::asio::error::eof) {
+                // LOG(info) << "half close pair";
+                // shutdown_half_pair(pair, r, w);
+            // } else {
                 shutdown_pair(pair);
-            }
+            // }
         }
     });
 }
