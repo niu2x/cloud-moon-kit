@@ -136,6 +136,7 @@ add_subdirectory(dynlib)
 add_subdirectory(msg800)
 add_subdirectory(ip_addr)
 add_subdirectory(load_dynlib)
+add_subdirectory(std_alias)
 add_subdirectory(charset)
 add_subdirectory(crypto)
 

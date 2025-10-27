@@ -2,9 +2,9 @@
 
 #include <cstdint>
 
-namespace yy {
+#include <yy/std_alias.h>
 
-using ByteBuffer = std::vector<uint8_t>;
+namespace yy {
 
 class AES_Crypto {
 public:

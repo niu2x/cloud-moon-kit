@@ -9,6 +9,7 @@ target_sources(yy_log PRIVATE
 
 target_link_libraries(yy_log PUBLIC
     yy_charset
+    yy_std_alias
     boost
     rust_lib
     Threads::Threads
